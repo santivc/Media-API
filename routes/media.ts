@@ -33,9 +33,9 @@ router.put('/:id', [
     validateToken,
     check('id', 'It is not a MongoId').isMongoId(),
     check('id').custom(existMediaById),
-    check('name', 'Name is required').not().isEmpty(),
-    check('category', 'Category is required').not().isEmpty(),
-    check('category').custom(isValidCategory),
+    check('name', 'Name is required').optional().not().isEmpty(),
+    check('category', 'Category is required').optional().not().isEmpty(),
+    check('category').optional().custom(isValidCategory),
     validateFields
 ], updateMedia)
 

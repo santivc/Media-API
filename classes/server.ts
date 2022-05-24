@@ -1,7 +1,8 @@
 import express, { Application } from 'express';
 import cors from 'cors';
+import fileUpload from 'express-fileupload';
 import dbConnection from '../db/config';
-import { userRoutes, mediaRoutes, listRoutes, authRoutes } from './../routes';
+import { userRoutes, mediaRoutes, listRoutes, authRoutes, uploadRoutes } from './../routes';
 
 
 class Server {
@@ -12,6 +13,7 @@ class Server {
         users: '/api/users',
         media: '/api/media',
         list: '/api/list',
+        upload: '/api/upload'
     }
 
     constructor() {
@@ -34,6 +36,8 @@ class Server {
         this.app.use(express.json());
         // PUBLIC
         this.app.use(express.static('public'));
+        // File Upload
+        this.app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/', createParentPath: true }));
     }
 
     routes() {
@@ -41,6 +45,7 @@ class Server {
         this.app.use(this.paths.users, userRoutes);
         this.app.use(this.paths.media, mediaRoutes);
         this.app.use(this.paths.list, listRoutes);
+        this.app.use(this.paths.upload, uploadRoutes);
     }
 
     listen() {

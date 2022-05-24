@@ -12,6 +12,7 @@ export const getList = async (req: Request, res: Response) => {
             .skip(Number(from))
             .limit(Number(limit))
             .populate('user', 'username')
+            .populate('media', '-state')
     ]);
 
     res.status(200).json({ count, list })
@@ -25,16 +26,17 @@ export const getListByIdOrUser = async (req: Request, res: Response) => {
     const list = await List.find({ $or: [{ _id: id }, { user }], state: true })
             .skip(Number(from))
             .limit(Number(limit))
-            .populate('user', 'username');
+            .populate('user', 'username')
+            .populate('media', '-state');
 
     res.status(200).json({ list });
 }
 
 export const createList = async (req: any, res: Response) => {
-    const user = req.user.uid;
-    const { state, ...data } = req.body;
+    const user = req.user._id;
+    const { media, name } = req.body;
 
-    const list = new List({ data, user });
+    const list = new List({ name, media, user });
     await list.save();
 
     res.status(201).json({ list });
@@ -42,18 +44,18 @@ export const createList = async (req: any, res: Response) => {
 
 export const updateList = async (req: any, res: Response) => {
     const { id } = req.params;
-    const { state, user, ...data} = req.body;
-    data.user = req.user.uid;
+    const { state, user, ...data } = req.body;
+    data.user = req.user._id;
 
 
-    const list = List.findByIdAndUpdate(id, data, { new: true });
+    const list = await List.findByIdAndUpdate(id, data, { new: true });
     
     res.status(200).json({ list });
 }
 
 export const deleteList = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const list = List.findByIdAndUpdate(id, { state: false }, { new: true });
+    const list = await List.findByIdAndUpdate(id, { state: false }, { new: true });
 
     res.status(200).json({ list });
 }

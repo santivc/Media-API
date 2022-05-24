@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 
 export default class Token {
-    private static privateKey: string = process.env.PRIVATEKEY || '';
+    private static privateKey: string = process.env.PRIVATEKEY || 'Est0MyPub1clK3y23@';
     private static expireIn: string = '4h';
 
     constructor() { }

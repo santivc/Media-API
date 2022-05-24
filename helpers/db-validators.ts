@@ -66,3 +66,14 @@ export const existListByUser = async (user: string) => {
         throw new Error(`The list with user (${user}) does not exist`);
     }
 }
+
+//? VALIDATE COLLECTIONS
+export const existCollection = (collection: string, collections: string []) => {
+    const existCollection = collections.includes(collection);
+
+    if (!existCollection) {
+        throw new Error(`La coleccion ${collection} no está permitida, ${collections}`);
+    }
+
+    return true;
+}

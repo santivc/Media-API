@@ -33,7 +33,6 @@ router.get('/:user/:id', [
 router.post('/', [
     validateToken,
     check('name', 'Name is required').not().isEmpty(),
-    check('user', 'It is not a MongoId').isMongoId(),
     validateFields
 ], createList)
 

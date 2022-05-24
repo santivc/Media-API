@@ -8,7 +8,7 @@ const ListSchema = new Schema({
     },
     media: [{
         type: Schema.Types.ObjectId,
-        ref: 'Serie'
+        ref: 'Media'
     }],
     state: {
         type: Boolean,
@@ -29,9 +29,7 @@ ListSchema.methods.toJSON = function() {
 
 interface IList extends Document {
     name: string;
-    series: string [];
-    films: string [];
-    videogames: string [];
+    media: string [];
     state: boolean;
     user: string;
 }
